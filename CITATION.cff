@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: "Snapdragon 778G (Adreno 642L) llama.cpp CPU vs OpenCL benchmark: OpenCL offload is slower than CPU"
+message: "If you use these measurements, please cite this repository."
+type: dataset
+authors:
+  - family-names: "vovaxa55"
+    name: "vovaxa55"
+    website: "https://github.com/vovaxa55"
+date-released: 2026-10-22
+license: CC-BY-4.0
+repository-code: "https://github.com/vovaxa55/snapdragon778g-llama-cpp-opencl-bench"
+url: "https://github.com/vovaxa55/snapdragon778g-llama-cpp-opencl-bench"
+abstract: >-
+  Benchmark of llama.cpp (fork 0.7.0-dev, commit 19ab5a5) on an OPPO Reno7 5G (Snapdragon 778G,
+  Adreno 642L, 8 GB LPDDR4x, Android 13) running in Termux. Qwen2.5-3B-Instruct Q4_K_M reaches 28.8 tok/s
+  prompt processing (256 tokens) and 7.45 tok/s generation (64 tokens) on the CPU with 4 threads
+  (-ngl 0), and every GPU offload level is slower: -ngl 8 = 25.5/5.25, -ngl 14 = 22.7/4.14,
+  -ngl 20 = 20.74/3.32, -ngl 37 = 17.37/2.24. Decode on the CPU already runs at ~91 % of the LPDDR4x-4266
+  memory-bandwidth roofline (2.094 GB per token), so GPU offload cannot help. The Adreno OpenCL driver also
+  requires source patches to run at all (vendor compiler SIGSEGV on multi-kernel programs, F16 GEMM and
+  flash-attention kernels fail to build). Includes thermal-throttling measurements: 29 % lower prompt
+  throughput at 45-47 C versus a cold device, ~2 % generation difference.
+keywords:
+  - llama.cpp
+  - OpenCL
+  - Adreno
+  - Snapdragon 778G
+  - Termux
+  - Android
+  - LLM inference
+  - benchmark
+  - ggml
+  - Qualcomm

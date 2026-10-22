@@ -1,0 +1,15 @@
+The text, tables, figures, benchmark data (data/) and the machine-readable
+synopsis (llms.txt) in this repository are licensed under the Creative Commons
+Attribution 4.0 International License (CC BY 4.0).
+
+You are free to share (copy and redistribute the material in any medium or
+format) and adapt (remix, transform, and build upon the material) for any
+purpose, even commercially, as long as you give appropriate credit.
+
+Full licence text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Suggested attribution:
+  vovaxa55, "Snapdragon 778G (Adreno 642L) llama.cpp CPU vs OpenCL benchmark",
+  https://github.com/vovaxa55/snapdragon778g-llama-cpp-opencl-bench
+
+Source code in scripts/ is licensed under the MIT License (see LICENSE).

@@ -1,0 +1,18 @@
+--- round 1 ngl=0  therm=44000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |           pp256 |         28.75 ± 0.09 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |            tg64 |          7.49 ± 0.02 |
+--- round 1 ngl=8  therm=47000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   8 |       4 |   0 |           pp256 |         25.47 ± 0.08 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   8 |       4 |   0 |            tg64 |          5.22 ± 0.01 |
+--- round 1 ngl=14  therm=47000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  14 |       4 |   0 |           pp256 |         23.25 ± 0.04 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  14 |       4 |   0 |            tg64 |          4.23 ± 0.01 |
+--- round 2 ngl=0  therm=47000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |           pp256 |         28.86 ± 0.01 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |            tg64 |          7.40 ± 0.04 |
+--- round 2 ngl=8  therm=48000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   8 |       4 |   0 |           pp256 |         25.55 ± 0.01 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   8 |       4 |   0 |            tg64 |          5.27 ± 0.03 |
+--- round 2 ngl=14  therm=48000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  14 |       4 |   0 |           pp256 |         22.23 ± 0.03 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  14 |       4 |   0 |            tg64 |          4.04 ± 0.02 |

@@ -1,0 +1,12 @@
+--- threads=2 therm=47000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       2 |   0 |           pp256 |         13.61 ± 0.00 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       2 |   0 |            tg64 |          6.21 ± 0.02 |
+--- threads=4 therm=46000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |           pp256 |         26.39 ± 0.02 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |            tg64 |          7.47 ± 0.02 |
+--- threads=6 therm=47000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       6 |   0 |           pp256 |         24.27 ± 0.08 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       6 |   0 |            tg64 |          5.65 ± 0.03 |
+--- threads=8 therm=47000
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |   0 |           pp256 |         25.51 ± 0.48 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |   0 |            tg64 |          4.47 ± 0.08 |

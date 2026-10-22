@@ -1,0 +1,9 @@
+*.log
+!data/*.log
+gputest-*.log
+cl-cache/
+build*/ 
+__pycache__/
+*.pyc
+*.gguf
+models/

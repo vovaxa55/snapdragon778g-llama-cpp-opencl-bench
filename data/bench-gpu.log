@@ -1,0 +1,201 @@
+=== ngl=0 ===
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+
+ggml_opencl: device: 'QUALCOMM Adreno(TM) (OpenCL 2.0 Adreno(TM) 642L)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) (OpenCL 2.0 Adreno(TM) 642L)'
+| model                          |       size |     params | backend    | ngl | threads |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |           pp256 |         40.20 ± 0.39 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |            tg64 |          7.43 ± 0.06 |
+
+build: 19ab5a5 (1)
+rc=0
+=== ngl=8 ===
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+
+ggml_opencl: device: 'QUALCOMM Adreno(TM) (OpenCL 2.0 Adreno(TM) 642L)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) (OpenCL 2.0 Adreno(TM) 642L)'
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2681
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_r2 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_r2", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2682
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_r4 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_r4", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2683
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_h8 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_h8", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2684
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_h8r2 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_h8r2", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2685
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2701
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2702
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr_ls = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr_ls", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2704
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr_lq = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr_lq", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2705
+ggml_opencl: (backend_ctx->kernel_mean_f32_4 = clCreateKernel(prog, "kernel_mean_f32_4", &err), err) error -46 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3384
+ggml_opencl: (backend_ctx->kernel_sum_rows_f32_4 = clCreateKernel(backend_ctx->program_sum_rows_f32, "kernel_sum_rows_f32_4", &err), err) error -46 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3422
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_cumsum_blk = clCreateKernel(prog, "kernel_cumsum_blk", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3438
+ggml_opencl: (backend_ctx->kernel_cumsum_add = clCreateKernel(prog, "kernel_cumsum_add", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3439
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3441
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_sigmoid_f32 = clCreateKernel(backend_ctx->program_sigmoid, "kernel_sigmoid_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3456
+ggml_opencl: (backend_ctx->kernel_sigmoid_f16 = clCreateKernel(backend_ctx->program_sigmoid, "kernel_sigmoid_f16", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3457
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_group_norm = clCreateKernel(backend_ctx->program_group_norm, "kernel_group_norm", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3473
+ggml_opencl: (backend_ctx->kernel_group_norm_mul_add = clCreateKernel(backend_ctx->program_group_norm, "kernel_group_norm_mul_add", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3474
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_repeat_f32 = clCreateKernel(prog, "kernel_repeat_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3489
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3490
+ggml_opencl: kernel compile error (err=-11):
+
+BC-src-code:117:22: error: expected identifier or '('
+REQD_SUBGROUP_SIZE_64
+                     ^
+1 diagnostic(s) generated.
+
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32 = clCreateKernel(prog, "kernel_ssm_scan_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3845
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32_mamba2_d128 = clCreateKernel(prog, "kernel_ssm_scan_f32_mamba2_d128", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3846
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32_mamba2_d256 = clCreateKernel(prog, "kernel_ssm_scan_f32_mamba2_d256", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3847
+ggml_opencl: clReleaseKernel(*kernels[i]) error -30 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3869
+ggml_opencl: clReleaseKernel(*kernels[i]) error -30 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3869
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3873
+| model                          |       size |     params | backend    | ngl | threads |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   8 |       4 |   0 |           pp256 |         26.91 ± 0.01 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   8 |       4 |   0 |            tg64 |          5.51 ± 0.04 |
+
+build: 19ab5a5 (1)
+rc=0
+=== ngl=11 ===
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+
+ggml_opencl: device: 'QUALCOMM Adreno(TM) (OpenCL 2.0 Adreno(TM) 642L)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) (OpenCL 2.0 Adreno(TM) 642L)'
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2681
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_r2 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_r2", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2682
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_r4 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_r4", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2683
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_h8 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_h8", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2684
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_h8r2 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_h8r2", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2685
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2701
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2702
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr_ls = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr_ls", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2704
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr_lq = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr_lq", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2705
+ggml_opencl: (backend_ctx->kernel_mean_f32_4 = clCreateKernel(prog, "kernel_mean_f32_4", &err), err) error -46 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3384
+ggml_opencl: (backend_ctx->kernel_sum_rows_f32_4 = clCreateKernel(backend_ctx->program_sum_rows_f32, "kernel_sum_rows_f32_4", &err), err) error -46 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3422
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_cumsum_blk = clCreateKernel(prog, "kernel_cumsum_blk", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3438
+ggml_opencl: (backend_ctx->kernel_cumsum_add = clCreateKernel(prog, "kernel_cumsum_add", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3439
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3441
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_sigmoid_f32 = clCreateKernel(backend_ctx->program_sigmoid, "kernel_sigmoid_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3456
+ggml_opencl: (backend_ctx->kernel_sigmoid_f16 = clCreateKernel(backend_ctx->program_sigmoid, "kernel_sigmoid_f16", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3457
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_group_norm = clCreateKernel(backend_ctx->program_group_norm, "kernel_group_norm", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3473
+ggml_opencl: (backend_ctx->kernel_group_norm_mul_add = clCreateKernel(backend_ctx->program_group_norm, "kernel_group_norm_mul_add", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3474
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_repeat_f32 = clCreateKernel(prog, "kernel_repeat_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3489
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3490
+ggml_opencl: kernel compile error (err=-11):
+
+BC-src-code:117:22: error: expected identifier or '('
+REQD_SUBGROUP_SIZE_64
+                     ^
+1 diagnostic(s) generated.
+
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32 = clCreateKernel(prog, "kernel_ssm_scan_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3845
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32_mamba2_d128 = clCreateKernel(prog, "kernel_ssm_scan_f32_mamba2_d128", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3846
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32_mamba2_d256 = clCreateKernel(prog, "kernel_ssm_scan_f32_mamba2_d256", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3847
+ggml_opencl: clReleaseKernel(*kernels[i]) error -30 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3869
+ggml_opencl: clReleaseKernel(*kernels[i]) error -30 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3869
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3873
+| model                          |       size |     params | backend    | ngl | threads |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  11 |       4 |   0 |           pp256 |         26.20 ± 0.09 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  11 |       4 |   0 |            tg64 |          5.01 ± 0.00 |
+
+build: 19ab5a5 (1)
+rc=0
+=== ngl=14 ===
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+
+ggml_opencl: device: 'QUALCOMM Adreno(TM) (OpenCL 2.0 Adreno(TM) 642L)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) (OpenCL 2.0 Adreno(TM) 642L)'
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2681
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_r2 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_r2", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2682
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_r4 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_r4", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2683
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_h8 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_h8", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2684
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_mrow_h8r2 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_mrow, "kernel_mul_mat_f16_f32_mrow_h8r2", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2685
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4 = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2701
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2702
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr_ls = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr_ls", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2704
+ggml_opencl: (backend_ctx->kernel_mul_mat_f16_f32_l4_dr_lq = clCreateKernel(backend_ctx->program_mul_mv_f16_f32_l4, "kernel_mul_mat_f16_f32_l4_dr_lq", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:2705
+ggml_opencl: (backend_ctx->kernel_mean_f32_4 = clCreateKernel(prog, "kernel_mean_f32_4", &err), err) error -46 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3384
+ggml_opencl: (backend_ctx->kernel_sum_rows_f32_4 = clCreateKernel(backend_ctx->program_sum_rows_f32, "kernel_sum_rows_f32_4", &err), err) error -46 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3422
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_cumsum_blk = clCreateKernel(prog, "kernel_cumsum_blk", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3438
+ggml_opencl: (backend_ctx->kernel_cumsum_add = clCreateKernel(prog, "kernel_cumsum_add", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3439
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3441
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_sigmoid_f32 = clCreateKernel(backend_ctx->program_sigmoid, "kernel_sigmoid_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3456
+ggml_opencl: (backend_ctx->kernel_sigmoid_f16 = clCreateKernel(backend_ctx->program_sigmoid, "kernel_sigmoid_f16", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3457
+ggml_opencl: kernel compile error (err=-6):
+
+Pass
+ggml_opencl: (backend_ctx->kernel_group_norm = clCreateKernel(backend_ctx->program_group_norm, "kernel_group_norm", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3473
+ggml_opencl: (backend_ctx->kernel_group_norm_mul_add = clCreateKernel(backend_ctx->program_group_norm, "kernel_group_norm_mul_add", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3474
+ggml_opencl: kernel compile error (err=-6):
+
+Error: Program not built!
+ggml_opencl: (backend_ctx->kernel_repeat_f32 = clCreateKernel(prog, "kernel_repeat_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3489
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3490
+ggml_opencl: kernel compile error (err=-11):
+
+BC-src-code:117:22: error: expected identifier or '('
+REQD_SUBGROUP_SIZE_64
+                     ^
+1 diagnostic(s) generated.
+
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32 = clCreateKernel(prog, "kernel_ssm_scan_f32", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3845
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32_mamba2_d128 = clCreateKernel(prog, "kernel_ssm_scan_f32_mamba2_d128", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3846
+ggml_opencl: (backend_ctx->kernel_ssm_scan_f32_mamba2_d256 = clCreateKernel(prog, "kernel_ssm_scan_f32_mamba2_d256", &err), err) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3847
+ggml_opencl: clReleaseKernel(*kernels[i]) error -30 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3869
+ggml_opencl: clReleaseKernel(*kernels[i]) error -30 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3869
+ggml_opencl: clReleaseProgram(prog) error -44 at ~/llama.cpp/ggml/src/ggml-opencl/ggml-opencl.cpp:3873
+| model                          |       size |     params | backend    | ngl | threads |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  14 |       4 |   0 |           pp256 |         25.47 ± 0.03 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  14 |       4 |   0 |            tg64 |          4.61 ± 0.01 |
+
+build: 19ab5a5 (1)
+rc=0

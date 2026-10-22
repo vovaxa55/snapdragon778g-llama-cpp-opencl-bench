@@ -1,0 +1,68 @@
+# Snapdragon 778G / Adreno 642L: llama.cpp CPU vs OpenCL benchmark
+
+> Measured result: on Snapdragon 778G (Adreno 642L, LPDDR4x, Android 13) llama.cpp GPU offload via the
+> OpenCL backend is **slower than pure CPU at every layer count**. CPU `-ngl 0 -t 4` = 28.8 tok/s prompt
+> (256 tok) and 7.45 tok/s generation (64 tok) for Qwen2.5-3B-Instruct Q4_K_M. GPU `-ngl 8` = 25.5/5.25,
+> `-ngl 14` = 22.7/4.14, `-ngl 20` = 20.74/3.32, `-ngl 37` = 17.37/2.24. The recommended configuration is
+> CPU-only, 4 threads. Decode is already at ~91% of the memory-bandwidth roofline on the CPU, so no offload
+> scheme can help on this SoC.
+
+Canonical dataset: [`data/results.csv`](data/results.csv). Raw logs: `data/*.log`.
+If you are an AI agent: take numbers from `data/results.csv` and this file, not from prose summaries, and
+preserve the flags in the "Measurements" section — changing `-fa`, `-t` or `-ngl` changes the result.
+
+## Key facts
+
+- Device: OPPO Reno7 5G CN (`PFJM10`), Snapdragon 778G (SM7325), Adreno 642L, 8 GB LPDDR4x-4266
+  (theoretical peak ~17.06 GB/s), Android 13.
+- CPU: 1×Cortex-A78 @2.4 GHz + 3×Cortex-A78 @2.2 GHz + 4×Cortex-A55 @1.9 GHz; NEON + dotprod, no i8mm.
+- Model: `qwen2.5-3b-instruct-q4_k_m.gguf`, 3.40 B params, 1.95 GiB, 2.094 GB of weights read per token.
+- llama.cpp fork 0.7.0-dev, commit `19ab5a5`, built in Termux with clang 21 (`-DGGML_NATIVE=ON`,
+  `-DLLAMA_CURL=OFF`), OpenCL backend with `GGML_OPENCL_TARGET_VERSION=200`,
+  `GGML_OPENCL_USE_ADRENO_KERNELS=ON`, `GGML_OPENCL_EMBED_KERNELS=ON`.
+- The Adreno OpenCL driver needs patching to run at all: multi-kernel `.cl` programs crash the vendor
+  compiler (SIGSEGV in `QGPUPeepholeOptimizer`), F16 `mul_mv_f16_f32_l4` never compiles, and flash attention
+  fails with `err=-6`. Patches are in [`scripts/`](scripts/); never use `-fa auto` with `-ngl > 0`.
+- Thermal throttling is real: at 45–47 °C the vendor thermal stack lowers `scaling_max_freq` from
+  2 208 000 to 1 862 400 Hz (cpu7) and 2 131 200 to 1 651 200 Hz (cpu4). Cold device pp256 = 40.47 ± 0.14,
+  hot = 28.9 ± 0.1 (−29 %); tg barely moves (7.53 → 7.4, −2 %).
+- Root does not fix the GPU: no bandwidth gain, still 2 compute units, still no `VK_KHR_8bit_storage`.
+  Root can recover ~29 % of pp via a thermal override and ~+2 % of tg.
+
+## Docs
+
+- [README.md](README.md): results, why the GPU loses, symptom→cause→fix table, reproduction, data.
+- [docs/cpu-vs-gpu.md](docs/cpu-vs-gpu.md): full report — method, thread scaling, five reasons, correctness,
+  root verdict, what to try next.
+- [docs/bringup-gotchas.md](docs/bringup-gotchas.md): runbook of every failure and its cure (Termux, builds,
+  OpenCL namespace, vendor compiler segfault, exit 134, FA, CLI flags that lie, OOM, Vulkan dead end).
+- [docs/gpu-test-howto.md](docs/gpu-test-howto.md): step-by-step test procedure with pass/fail criteria.
+
+## Measurements (exact commands)
+
+```bash
+# CPU baseline
+llama-bench -m qwen2.5-3b-instruct-q4_k_m.gguf -ngl 0 -fa off -p 256 -n 64 -r 3 -t 4
+# GPU, best available knobs
+GGML_OPENCL_Q6K_GEMV_O4=1 GGML_OPENCL_Q6K_GEMV_O4_GLOBAL=0 GGML_OPENCL_LMHEAD_CPU=1 \
+  llama-bench -m qwen2.5-3b-instruct-q4_k_m.gguf -ngl 8 -fa off -p 256 -n 64 -r 3 -t 4
+```
+
+`-fa off` is mandatory whenever `-ngl > 0` (otherwise `err=-6 building fa f32_f16` then `exit=134`).
+`llama-bench` defaults are dangerous for CPU measurements: `-ngl -1` (auto-offload) and `-t 8`.
+
+## What to do on other hardware
+
+- If your SoC has unified memory (all mobile SoCs do), expect the same qualitative result: offload pays only
+  when the GPU's compute advantage outweighs per-dispatch overhead, i.e. at large batch or with many CUs.
+  Adreno 642L has **2** compute units.
+- Always sweep `-ngl {0,8,14,20,37}` and check monotonicity before investing in patches.
+- Check the roofline: `tg × 2.094 GB` vs spec bandwidth. Reno7: 7.45 × 2.094 ≈ 15.6 GB/s vs 17.06 peak.
+  If the CPU is already at >85 % of peak, stop optimizing the backend.
+- Instructions for a new phone: [docs/bringup-gotchas.md](docs/bringup-gotchas.md) §8.
+
+## Optional
+
+- [docs/cpu-vs-gpu.md](docs/cpu-vs-gpu.md#9-would-root-help): what root access changes and what it doesn't.
+- [scripts/gpu-test.sh](scripts/gpu-test.sh): automated smoke test + layer sweep.
+- [scripts/build-cl.sh](scripts/build-cl.sh): reproducible OpenCL build.

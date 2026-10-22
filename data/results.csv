@@ -1,0 +1,15 @@
+section,label,backend,ngl,threads,prompt_tokens,gen_tokens,reps,pp_t_s,tg_t_s,so_c_temp_c,notes
+layer_sweep,cpu_ngl0_median,cpu,0,4,256,64,2,28.80,7.45,44-48,median of 2 interleaved runs (28.75/7.49 and 28.86/7.40)
+layer_sweep,gpu_ngl8_median,opencl_adreno642l,8,4,256,64,2,25.51,5.25,44-48,median of 2 (25.47/5.22 and 25.55/5.27); -11% pp / -30% tg
+layer_sweep,gpu_ngl14_median,opencl_adreno642l,14,4,256,64,2,22.74,4.14,44-48,median of 2 (23.25/4.23 and 22.23/4.04); -21% pp / -44% tg
+layer_sweep,gpu_ngl20,opencl_adreno642l,20,4,256,64,3,20.74,3.32,44-48,-28% pp / -55% tg vs CPU
+layer_sweep,gpu_ngl37,opencl_adreno642l,37,4,256,64,3,17.37,2.24,44-48,all layers on GPU; -40% pp / -70% tg
+threads,cpu_t2,cpu,0,2,256,64,2,13.60,6.21,44-48,2xA78
+threads,cpu_t4,cpu,0,4,256,64,2,26.40,7.47,44-48,lower bound of the 26.4-28.8 range for -t 4
+threads,cpu_t6,cpu,0,6,256,64,2,24.30,5.65,44-48,mixes in A55 cores
+threads,cpu_t8,cpu,0,8,256,64,2,25.50,4.47,44-48,llama-bench default; tg -40% vs -t 4
+crosscheck,cpu_only_build_t4,cpu,0,4,256,64,3,28.98,7.57,44-48,build/ CPU-only binary instead of build-cl
+crosscheck,cpu_only_build_t8,cpu,0,8,256,64,3,29.59,5.88,44-48,build/ CPU-only binary
+thermal,cold_max_clocks,cpu,0,4,256,128,3,40.47,7.53,36-41,scaling_max_freq at spec max 2208000/2131200
+thermal,hot_throttled,cpu,0,4,256,64,3,28.90,7.40,45-47,scaling_max_freq cut to 1862400/1651200; pp -29%
+correctness,lmhead_cpu_ngl8,opencl_adreno642l,8,4,16,64,1,out_of_scope,5.40,n/a,llama-cli; with lm_head on GPU the same run gave 4.9 t/s

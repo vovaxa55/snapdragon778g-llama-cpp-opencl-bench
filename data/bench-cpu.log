@@ -1,0 +1,8 @@
+| model                          |       size |     params | backend    | threads |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | ------: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       4 |           pp256 |         28.98 ± 0.02 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       4 |            tg64 |          7.57 ± 0.01 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       8 |           pp256 |         29.59 ± 0.72 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | CPU        |       8 |            tg64 |          5.88 ± 0.19 |
+
+build: 19ab5a5 (1)
