@@ -200,3 +200,20 @@ One model, one phone, one llama.cpp revision, one driver version. The numbers ar
 about "Android GPUs" — they are a statement about **Adreno 642L + LPDDR4x + vendor OpenCL 2.0 driver on
 Android 13**. If you are on a different Adreno generation, run `llama-bench` yourself; §3 and
 `docs/bringup-gotchas.md` tell you what will break.
+
+---
+
+## 10. Contributing numbers for other hardware
+
+The interesting open question is whether the crossover point moves on SoCs with more GPU compute units
+(Adreno 642L has only 2). If you measure another device, open an issue with the
+[device report template](.github/ISSUE_TEMPLATE/device-report.md) — it asks exactly the fields needed to make
+the numbers comparable: exact `llama-bench` command, `-fa` state, thread count, cmake flags, env knobs, SoC
+temperature, and the roofline check (`tg × bytes_per_token` vs spec bandwidth).
+
+Rules that keep the dataset useful:
+
+1. Always report the CPU baseline from the same binary and model, same session, interleaved with the GPU runs.
+2. Report SoC temperature, or at least whether the device was cold or hot.
+3. Never report GPU numbers without a correctness check first (see `docs/gpu-test-howto.md` §7).
+4. State the llama.cpp commit and driver version; both change results.
