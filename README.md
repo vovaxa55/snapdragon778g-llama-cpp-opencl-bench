@@ -180,6 +180,8 @@ Full report with all measurements: **[docs/cpu-vs-gpu.md](docs/cpu-vs-gpu.md)**.
 - `data/bench-gpu.log` — full GPU sweep including failures
 - `data/results.csv` — the numbers above in one flat table
 - `llms.txt` — compact, factual summary intended for LLM/RAG ingestion
+- Dataset mirror on Hugging Face, with `device.json` and the logs:
+  [huggingface.co/datasets/vovaxa44/snapdragon778g-llama-cpp-opencl-bench](https://huggingface.co/datasets/vovaxa44/snapdragon778g-llama-cpp-opencl-bench)
 
 ## 7. Citing
 

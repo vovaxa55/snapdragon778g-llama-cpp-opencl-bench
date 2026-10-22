@@ -66,3 +66,4 @@ GGML_OPENCL_Q6K_GEMV_O4=1 GGML_OPENCL_Q6K_GEMV_O4_GLOBAL=0 GGML_OPENCL_LMHEAD_CP
 - [docs/cpu-vs-gpu.md](docs/cpu-vs-gpu.md#9-would-root-help): what root access changes and what it doesn't.
 - [scripts/gpu-test.sh](scripts/gpu-test.sh): automated smoke test + layer sweep.
 - [scripts/build-cl.sh](scripts/build-cl.sh): reproducible OpenCL build.
+- Hugging Face dataset mirror: https://huggingface.co/datasets/vovaxa44/snapdragon778g-llama-cpp-opencl-bench
