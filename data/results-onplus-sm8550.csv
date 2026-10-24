@@ -1,0 +1,24 @@
+section,label,backend,ngl,threads,prompt_tokens,gen_tokens,reps,pp_t_s,tg_t_s,so_c_temp_c,notes
+session_a,cpu_ngl0_r1,opencl_binary,0,4,256,64,3,42.05,12.88,not_logged,hot session (run right after the build; thermal_zone0 not sampled); +/-0.74 pp / +/-0.53 tg; cpu7 cap 2092800
+session_a,gpu_ngl18_r1,opencl_adreno740,18,4,256,64,3,36.96,12.20,not_logged,18/36 layers; +/-0.04 pp / +/-0.80 tg; -12% pp / -5% tg vs CPU of the same pair
+session_a,cpu_ngl0_r2,opencl_binary,0,4,256,64,3,36.59,12.03,not_logged,+/-0.00 pp / +/-0.52 tg; no cooldown after the GPU round
+session_a,gpu_ngl18_r2,opencl_adreno740,18,4,256,64,3,33.61,11.60,not_logged,+/-0.11 pp / +/-0.76 tg; -8% pp / -4% tg; cpu7 cap 1478400
+session_b,cpu_ngl0_r1,opencl_binary,0,4,256,64,3,45.11,13.81,39.6-47.0,cooled session (~3 min after session_a); zone0 at start-end of the run; +/-0.74 pp / +/-0.56 tg; -fa off; cpu7 cap 2092800
+session_b,gpu_ngl18_r1,opencl_adreno740,18,4,256,64,3,36.97,12.97,47.0-49.3,18/36 layers; +/-0.02 pp / +/-0.71 tg; -18% pp / -6% tg vs CPU
+session_b,cpu_ngl0_r2,opencl_binary,0,4,256,64,3,40.85,12.59,50.5-52.0,+/-0.01 pp / +/-0.44 tg; no cooldown after the GPU round; cpu7 cap 1843200
+session_b,gpu_ngl18_r2,opencl_adreno740,18,4,256,64,3,35.99,12.53,52.7-54.1,+/-0.12 pp / +/-0.74 tg; -12% pp / -0.5% tg; cpu7 cap 1593600
+layer_sweep,cpu_ngl0_reference,opencl_binary,0,4,256,64,3,42.05,12.88,not_logged,warm reference (session_a r1)
+layer_sweep,gpu_ngl9,opencl_adreno740,9,4,256,64,1,41.20,13.31,not_logged,25% of layers; -2% pp / +3% tg
+layer_sweep,gpu_ngl18,opencl_adreno740,18,4,256,64,2,37.00,13.00,not_logged,50% of layers; -12% pp / +1% tg
+layer_sweep,gpu_ngl27,opencl_adreno740,27,4,256,64,1,34.30,13.33,not_logged,75% of layers; -18% pp / +3% tg
+layer_sweep,gpu_ngl36,opencl_adreno740,36,4,256,64,1,31.78,13.44,not_logged,all layers; -24% pp / +4% tg
+flash_attn,gpu_ngl18_fa_on,opencl_adreno740,18,4,256,64,1,41.68,7.55,not_logged,FA kernels compile but tg nearly halves versus -fa off
+flash_attn,cpu_ngl0_fa_on,opencl_binary,0,4,256,64,1,40.76,12.55,not_logged,tg unchanged versus -fa off
+sustained,cpu_ngl0_r10,opencl_binary,0,4,256,64,10,44.30,12.52,34.4-53.2,+/-0.95 pp / +/-0.44 tg; 117 s of load; 5 min cooldown before
+sustained,gpu_ngl18_r10,opencl_adreno740,18,4,256,64,10,27.84,9.41,36.3-53.3,+/-0.73 pp / +/-0.10 tg; 176 s of load; -37% pp / -25% tg
+memory,cpu_ngl0_rss,opencl_binary,0,4,256,64,3,n/a,n/a,34.4-53.2,peak RSS (VmHWM) 2084 MiB
+memory,gpu_ngl18_rss,opencl_adreno740,18,4,256,64,3,n/a,n/a,36.3-53.3,peak RSS 1350 MiB; ~730 MiB of weights live in GPU memory
+thermal_probe,cpu_ngl0_short,opencl_binary,0,4,32,8,3,n/a,n/a,37.0-47.1,peak big 91.9 / cpuss 87.2 / gpuss 65.9 C; cpu7 cap 2092800 held
+thermal_probe,gpu_ngl18_short,opencl_adreno740,18,4,32,8,3,n/a,n/a,35.0-46.3,peak big 90.7 / cpuss 84.0 / gpuss 71.0 C; perf HAL raised cpu7 to 3187200
+thermal_probe,cpu_ngl0_sustained,opencl_binary,0,4,256,64,10,n/a,n/a,34.4-53.2,peak big 92.3 / cpuss 88.4 / gpuss 69.0 C; cpu7 cap cut at 102 s; floor 1843200
+thermal_probe,gpu_ngl18_sustained,opencl_adreno740,18,4,256,64,10,n/a,n/a,36.3-53.3,peak big 86.0 / cpuss 82.9 / gpuss 72.2 C; cpu7 cap cut at 144 s; cpu3 min 729600

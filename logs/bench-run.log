@@ -1,0 +1,45 @@
+=== ROUND 1 CPU ngl=0 t=4 ===
+therm zone0=45894 cpu7cur=864000 cpu7max=1593600 gov=uag
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+ggml_opencl: device: 'QUALCOMM Adreno(TM) (OpenCL 3.0 Adreno(TM) 740)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) (OpenCL 3.0 Adreno(TM) 740)'
+| model                          |       size |     params | backend    | ngl | threads |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |           pp256 |         42.05 ± 0.74 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |            tg64 |         12.88 ± 0.53 |
+build: 6b9ba4f (1)
+therm zone0=52129 cpu7cur=864000 cpu7max=1593600 gov=uag
+=== ROUND 1 GPU ngl=18 t=4 ===
+therm zone0=52129 cpu7cur=864000 cpu7max=1593600 gov=uag
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+ggml_opencl: device: 'QUALCOMM Adreno(TM) (OpenCL 3.0 Adreno(TM) 740)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) (OpenCL 3.0 Adreno(TM) 740)'
+| model                          |       size |     params | backend    | ngl | threads |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  18 |       4 |   0 |           pp256 |         36.96 ± 0.04 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  18 |       4 |   0 |            tg64 |         12.20 ± 0.80 |
+build: 6b9ba4f (1)
+therm zone0=53751 cpu7cur=864000 cpu7max=1593600 gov=uag
+=== ROUND 2 CPU ngl=0 t=4 ===
+therm zone0=54735 cpu7cur=864000 cpu7max=1593600 gov=uag
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+ggml_opencl: device: 'QUALCOMM Adreno(TM) (OpenCL 3.0 Adreno(TM) 740)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) (OpenCL 3.0 Adreno(TM) 740)'
+| model                          |       size |     params | backend    | ngl | threads |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |           pp256 |         36.59 ± 0.00 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |            tg64 |         12.03 ± 0.52 |
+build: 6b9ba4f (1)
+therm zone0=54719 cpu7cur=864000 cpu7max=1478400 gov=uag
+=== ROUND 2 GPU ngl=18 t=4 ===
+therm zone0=55623 cpu7cur=864000 cpu7max=1478400 gov=uag
+ggml_opencl: selected platform: 'QUALCOMM Snapdragon(TM)'
+ggml_opencl: device: 'QUALCOMM Adreno(TM) (OpenCL 3.0 Adreno(TM) 740)'
+ggml_opencl: default device: 'QUALCOMM Adreno(TM) (OpenCL 3.0 Adreno(TM) 740)'
+| model                          |       size |     params | backend    | ngl | threads |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | ------: | --: | --------------: | -------------------: |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  18 |       4 |   0 |           pp256 |         33.61 ± 0.11 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  18 |       4 |   0 |            tg64 |         11.60 ± 0.76 |
+build: 6b9ba4f (1)
+therm zone0=56808 cpu7cur=864000 cpu7max=1478400 gov=uag
+=== ALL BENCH DONE ===

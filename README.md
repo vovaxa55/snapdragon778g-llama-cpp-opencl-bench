@@ -1,16 +1,20 @@
-# llama.cpp on Snapdragon 778G: CPU vs Adreno 642L (OpenCL) — measurements, patches, and why the GPU loses
+# llama.cpp on Snapdragon 778G and 8 Gen 2: CPU vs Adreno (OpenCL) — measurements, patches, and why the GPU loses
 
-Benchmark of **Qwen2.5-3B-Instruct Q4_K_M** on a mid-range Android phone, comparing a pure CPU run with
-GPU offload through the `ggml-opencl` backend, plus the driver bugs that had to be patched before the GPU
-would run at all.
+Benchmark of **Qwen2.5-3B-Instruct Q4_K_M** on two Android phones (one mid-range, one flagship), comparing
+a pure CPU run with GPU offload through the `ggml-opencl` backend, plus the driver bugs that had to be
+patched before the GPU would run at all.
 
-Device: OPPO Reno7 5G CN (`PFJM10`), Snapdragon 778G / Adreno 642L, 8 GB RAM, Android 13.
-Stack: Termux, clang 21.1.8, llama.cpp `19ab5a5` (fork `0.7.0-dev`).
-Measured: 2026-10-22. Benchmark only — no server, no chat UI.
+Devices: OPPO Reno7 5G CN (`PFJM10`), Snapdragon 778G / Adreno 642L, 8 GB RAM, Android 13 — and, since
+2026-10-24, OnePlus 11 (`PHB110`), Snapdragon 8 Gen 2 / Adreno 740, 14 GB RAM, Android 16 (§11).
+Stack: Termux, clang 21.1.8, llama.cpp `19ab5a5` (Reno7) and `6b9ba4f` (OnePlus), fork `0.7.0-dev`.
+Benchmark only — no server, no chat UI.
 
-**Short version: on this SoC, offloading layers to the Adreno GPU is a net loss at every depth.
+**Short version: on both SoCs, offloading layers to the Adreno GPU is a net loss at every depth.
 Pure CPU with 4 threads is the fastest configuration, and it is already at ~91 % of the memory
 roofline, so there is almost nothing left to win.**
+
+The same experiment on a flagship SoC (Snapdragon 8 Gen 2 / Adreno 740, 6 compute units) is in §11 — the
+GPU is much less slow there, but still never wins.
 
 ---
 
@@ -179,6 +183,8 @@ Full report with all measurements: **[docs/cpu-vs-gpu.md](docs/cpu-vs-gpu.md)**.
   OpenCL build's CPU path)
 - `data/bench-gpu.log` — full GPU sweep including failures
 - `data/results.csv` — the numbers above in one flat table
+- `data/results-onplus-sm8550.csv`, `data/thermal-onplus-sm8550-*.csv`, `logs/` — the second-device data
+  from §11 (see `docs/oneplus-sm8550-cpu-vs-gpu.md` §11 for the column layout)
 - `llms.txt` — compact, factual summary intended for LLM/RAG ingestion
 - Dataset mirror on Hugging Face, with `device.json` and the logs:
   [huggingface.co/datasets/vovaxa44/snapdragon778g-llama-cpp-opencl-bench](https://huggingface.co/datasets/vovaxa44/snapdragon778g-llama-cpp-opencl-bench)
@@ -198,17 +204,20 @@ Scripts and patches: MIT. Text and data: CC BY 4.0. See `LICENSE` and `LICENSE-d
 
 ## 9. Scope
 
-One model, one phone, one llama.cpp revision, one driver version. The numbers are not a general statement
-about "Android GPUs" — they are a statement about **Adreno 642L + LPDDR4x + vendor OpenCL 2.0 driver on
-Android 13**. If you are on a different Adreno generation, run `llama-bench` yourself; §3 and
-`docs/bringup-gotchas.md` tell you what will break.
+Two models of phone, two SoCs (SD778G/Adreno 642L and SD 8 Gen 2/Adreno 740), one model file, one
+llama-bench protocol. The numbers are still not a general statement about "Android GPUs" — they are
+statements about these two SoC + memory + vendor-driver combinations. If you are on a different Adreno
+generation, run `llama-bench` yourself; §3 and `docs/bringup-gotchas.md` tell you what will break, and
+`docs/oneplus-sm8550-cpu-vs-gpu.md` shows what a newer driver does *not* fix.
 
 ---
 
 ## 10. Contributing numbers for other hardware
 
 The interesting open question is whether the crossover point moves on SoCs with more GPU compute units
-(Adreno 642L has only 2). If you measure another device, open an issue with the
+(Adreno 642L has only 2). **Partially answered:** §11 repeats the whole experiment on a Snapdragon 8 Gen 2
+with an Adreno 740 and 6 compute units, and the crossover still does not appear — the GPU is merely less
+catastrophically slow than on the 778G. If you measure another device, open an issue with the
 [device report template](.github/ISSUE_TEMPLATE/device-report.md) — it asks exactly the fields needed to make
 the numbers comparable: exact `llama-bench` command, `-fa` state, thread count, cmake flags, env knobs, SoC
 temperature, and the roofline check (`tg × bytes_per_token` vs spec bandwidth).
@@ -219,3 +228,49 @@ Rules that keep the dataset useful:
 2. Report SoC temperature, or at least whether the device was cold or hot.
 3. Never report GPU numbers without a correctness check first (see `docs/gpu-test-howto.md` §7).
 4. State the llama.cpp commit and driver version; both change results.
+
+---
+
+## 11. Second device: Snapdragon 8 Gen 2 / Adreno 740 — the crossover still does not appear
+
+The obvious objection to everything above is "the Adreno 642L only has 2 compute units, of course it loses".
+So the same experiment was repeated on a flagship-class SoC, with the same model, the same
+`-p 256 -n 64 -t 4 -fa off` protocol, interleaved rounds, sustained `-r 10` runs and 1 Hz thermal telemetry.
+
+Device: OnePlus 11 (`PHB110`), Snapdragon 8 Gen 2 (`SM8550`), Adreno 740 with **6 compute units**, 14 GB
+RAM, Android 16. Full write-up: [`docs/oneplus-sm8550-cpu-vs-gpu.md`](docs/oneplus-sm8550-cpu-vs-gpu.md).
+
+| metric | Reno7 (SD778G, 2 CU) | OnePlus 11 (SD 8 Gen 2, 6 CU) |
+|---|---:|---:|
+| CPU pp256, cool | 40.5 t/s | **45.1 t/s** |
+| CPU pp256, warm / sustained | 28.9 t/s | **42.1 / 44.3 t/s** |
+| CPU tg64, cool | 7.45 t/s | **13.81 t/s** |
+| GPU ~50 %: pp | 22.7 t/s (44 % of layers), −21 % | 37.0 t/s (18/36 layers), −12 % |
+| GPU ~50 %: tg | 4.14 t/s, −44 % | 12.97 t/s, −6 % |
+| GPU 100 %: pp / tg | 17.4 / 2.24 t/s, −40 % / −70 % | 31.8 / 13.4 t/s, −24 % / −3 % |
+| best `-ngl` for the GPU | none | none |
+| sustained GPU penalty (`-r 10`) | not measured | **−37 % pp / −25 % tg** |
+| OpenCL patches needed | segfaults, FA `err=-6`, wrong output | none |
+
+What changed and what did not:
+
+- **The driver matured.** The Adreno 740 needs none of the 778G workarounds, flash attention compiles and
+  runs (it is still slower, see below), and the OpenCL path produces correct output out of the box.
+- **The CPU moved further ahead.** Decode goes from 7.45 to 13.81 t/s — a measured ~15.6 → ~29 GB/s of
+  effective decode bandwidth, i.e. the 8 Gen 2 roughly doubled per-token memory throughput, and the CPU path
+  was already at ~91 % of the roofline on the 778G. There is even less headroom for the GPU to exploit.
+- **Full offload stopped being catastrophic but stayed a loss.** Prompt processing falls monotonically with
+  every layer moved to the GPU (42 → 32 t/s, −24 % at 100 % offload, versus −40 % on the Reno7); generation is
+  essentially flat (−3 %). No layer count beats `-ngl 0`.
+- **The throttling story is harsher, not gentler.** The trigger is SoC-wide (`scaling_max_freq` is cut at
+  ~50–52 °C package / 85–91 °C big-core regardless of backend), the GPU run takes 176 s instead of 117 s for
+  the same work, and while it runs the vendor perf-HAL pins the prime core at **864 MHz in 155 of 157 sampled
+  seconds** (versus 1.84–2.48 GHz on the CPU run). Offload relocates heat; it does not remove it.
+- **Memory is still the only reason to offload:** 2084 → 1350 MiB peak RSS, i.e. ~730 MiB freed, on a phone
+  where that no longer matters.
+
+Raw data: [`data/results-onplus-sm8550.csv`](data/results-onplus-sm8550.csv),
+[`data/thermal-onplus-sm8550-cpu.csv`](data/thermal-onplus-sm8550-cpu.csv),
+[`data/thermal-onplus-sm8550-gpu.csv`](data/thermal-onplus-sm8550-gpu.csv),
+plus the two `-probe.csv` files and the run logs in [`logs/`](logs). The same data is mirrored to the
+Hugging Face dataset.

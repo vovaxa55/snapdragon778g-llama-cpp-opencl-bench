@@ -143,3 +143,18 @@ What root does **not** give: memory bandwidth (GPU and CPU read the same LPDDR4x
 at ~91 % of the ceiling), `max_compute_units = 2` in Adreno 642L, `VK_KHR_8bit_storage` in the Vulkan driver.
 So root turns "28.9 / 7.4 sustained" into "~40 / 7.5 while cold", but does not make GPU offload worthwhile.
 A substantially better tg needs a different SoC — LPDDR5 and more CUs.
+
+## 10. Update (2026-10-24): the same test on LPDDR5 and 6 compute units
+
+Exactly that SoC was measured afterwards: OnePlus 11, Snapdragon 8 Gen 2 (`SM8550`), Adreno 740 with 6
+compute units, LPDDR5X, Android 16, same model and protocol. Report:
+[`oneplus-sm8550-cpu-vs-gpu.md`](oneplus-sm8550-cpu-vs-gpu.md), data:
+[`data/results-onplus-sm8550.csv`](../data/results-onplus-sm8550.csv).
+
+- Decode did improve as predicted: tg 7.45 → **13.81 t/s** (~15.6 → ~29 GB/s effective), and pp 28.8 → 45.1.
+- More compute units did **not** produce a crossover: pp still falls monotonically with `-ngl`
+  (42.1 → 31.8 t/s at 100 % offload, −24 %), and tg stays flat. Best config is still `-ngl 0 -t 4`.
+- The Adreno 740 driver needs none of the 778G patches, so the "GPU is unusable" part of this report is
+  specific to the old driver; the "GPU is slower than 4 ARM cores" part is not.
+- Under sustained load the GPU path is *worse* than the short-run numbers suggest (−37 % pp / −25 % tg),
+  because the whole SoC throttles and the prime core gets pinned at 864 MHz.

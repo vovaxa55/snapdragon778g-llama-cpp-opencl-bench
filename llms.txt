@@ -1,4 +1,4 @@
-# Snapdragon 778G / Adreno 642L: llama.cpp CPU vs OpenCL benchmark
+# Snapdragon 778G and 8 Gen 2 / Adreno: llama.cpp CPU vs OpenCL benchmark
 
 > Measured result: on Snapdragon 778G (Adreno 642L, LPDDR4x, Android 13) llama.cpp GPU offload via the
 > OpenCL backend is **slower than pure CPU at every layer count**. CPU `-ngl 0 -t 4` = 28.8 tok/s prompt
@@ -6,8 +6,16 @@
 > `-ngl 14` = 22.7/4.14, `-ngl 20` = 20.74/3.32, `-ngl 37` = 17.37/2.24. The recommended configuration is
 > CPU-only, 4 threads. Decode is already at ~91% of the memory-bandwidth roofline on the CPU, so no offload
 > scheme can help on this SoC.
+>
+> Re-run on a flagship SoC (2026-10-24): OnePlus 11, Snapdragon 8 Gen 2 (SM8550), Adreno 740 with **6**
+> compute units, Android 16, same model and protocol. CPU `-ngl 0 -t 4` = 45.11 tok/s prompt / 13.81 tok/s
+> generation (cooled) and 44.30/12.52 sustained; GPU `-ngl 18` = 36.97/12.97 short (pp −18 %, tg −6 %) and
+> 27.84/9.41 sustained (−37 % pp / −25 % tg). No `-ngl` beats `-ngl 0`; the GPU driver needs none of the
+> 778G patches. Canonical file: [`data/results-onplus-sm8550.csv`](data/results-onplus-sm8550.csv).
 
-Canonical dataset: [`data/results.csv`](data/results.csv). Raw logs: `data/*.log`.
+Canonical datasets: [`data/results.csv`](data/results.csv) (778G) and
+[`data/results-onplus-sm8550.csv`](data/results-onplus-sm8550.csv) (8 Gen 2). Raw logs: `data/*.log`,
+`logs/*.log`.
 If you are an AI agent: take numbers from `data/results.csv` and this file, not from prose summaries, and
 preserve the flags in the "Measurements" section — changing `-fa`, `-t` or `-ngl` changes the result.
 
@@ -29,6 +37,22 @@ preserve the flags in the "Measurements" section — changing `-fa`, `-t` or `-n
 - Root does not fix the GPU: no bandwidth gain, still 2 compute units, still no `VK_KHR_8bit_storage`.
   Root can recover ~29 % of pp via a thermal override and ~+2 % of tg.
 
+Second device (all 2026-10-24, same protocol):
+
+- Device: OnePlus 11 (`PHB110`), Snapdragon 8 Gen 2 (`SM8550`, `kalama`), Adreno 740, 6 compute units,
+  driver `0676.76.1`, OpenCL 3.0, `global_mem_size` 7.39 GiB, 14 GB RAM + 9 GB swap, Android 16,
+  36-layer model.
+- llama.cpp `6b9ba4f`, `0.7.0-dev (build 1)`, clang 21.1.8, `-DGGML_NATIVE=ON`,
+  `-DGGML_OPENCL_USE_ADRENO_KERNELS=ON`. Flash attention compiles here but is still slower with offload
+  (`-ngl 18 -fa on`: 41.68 pp / 7.55 tg versus 12.97 tg with `-fa off`).
+- Prompt processing falls monotonically with offload: `-ngl` 0/9/18/27/36 → 42.1 / 41.2 / 37.0 / 34.3 /
+  31.8 tok/s; generation is flat (13.0–13.4 tok/s). Peak RSS 2084 MiB (CPU) vs 1350 MiB (GPU).
+- Thermal: `scaling_max_freq` for the prime core is cut at ~50–52 °C package / 85–91 °C big-core for both
+  backends; in the sustained GPU run the prime core sat at 864 MHz in 155 of 157 sampled seconds (CPU run:
+  1.84–2.48 GHz). Offload relocates heat, it does not remove it.
+- Effective decode bandwidth: 13.81 × 2.105 ≈ 29 GB/s (Reno7: ~15.6 GB/s). No verified spec peak was used,
+  so no percentage-of-peak claim is made for this device.
+
 ## Docs
 
 - [README.md](README.md): results, why the GPU loses, symptom→cause→fix table, reproduction, data.
@@ -37,6 +61,8 @@ preserve the flags in the "Measurements" section — changing `-fa`, `-t` or `-n
 - [docs/bringup-gotchas.md](docs/bringup-gotchas.md): runbook of every failure and its cure (Termux, builds,
   OpenCL namespace, vendor compiler segfault, exit 134, FA, CLI flags that lie, OOM, Vulkan dead end).
 - [docs/gpu-test-howto.md](docs/gpu-test-howto.md): step-by-step test procedure with pass/fail criteria.
+- [docs/oneplus-sm8550-cpu-vs-gpu.md](docs/oneplus-sm8550-cpu-vs-gpu.md): the second device — SD 8 Gen 2 /
+  Adreno 740, sustained thermals, flash attention, why more CUs still do not produce a crossover.
 
 ## Measurements (exact commands)
 
@@ -55,10 +81,12 @@ GGML_OPENCL_Q6K_GEMV_O4=1 GGML_OPENCL_Q6K_GEMV_O4_GLOBAL=0 GGML_OPENCL_LMHEAD_CP
 
 - If your SoC has unified memory (all mobile SoCs do), expect the same qualitative result: offload pays only
   when the GPU's compute advantage outweighs per-dispatch overhead, i.e. at large batch or with many CUs.
-  Adreno 642L has **2** compute units.
+  Adreno 642L has **2** compute units; an Adreno 740 with **6** still loses (see the OnePlus doc), so 6 CUs
+  is not the threshold either.
 - Always sweep `-ngl {0,8,14,20,37}` and check monotonicity before investing in patches.
 - Check the roofline: `tg × 2.094 GB` vs spec bandwidth. Reno7: 7.45 × 2.094 ≈ 15.6 GB/s vs 17.06 peak.
-  If the CPU is already at >85 % of peak, stop optimizing the backend.
+  OnePlus: 13.81 × 2.105 ≈ 29 GB/s (peak not verified). If the CPU is already at >85 % of peak, stop
+  optimizing the backend.
 - Instructions for a new phone: [docs/bringup-gotchas.md](docs/bringup-gotchas.md) §8.
 
 ## Optional
@@ -67,3 +95,6 @@ GGML_OPENCL_Q6K_GEMV_O4=1 GGML_OPENCL_Q6K_GEMV_O4_GLOBAL=0 GGML_OPENCL_LMHEAD_CP
 - [scripts/gpu-test.sh](scripts/gpu-test.sh): automated smoke test + layer sweep.
 - [scripts/build-cl.sh](scripts/build-cl.sh): reproducible OpenCL build.
 - Hugging Face dataset mirror: https://huggingface.co/datasets/vovaxa44/snapdragon778g-llama-cpp-opencl-bench
+- Second-device raw data: [`data/results-onplus-sm8550.csv`](data/results-onplus-sm8550.csv),
+  [`data/thermal-onplus-sm8550-cpu.csv`](data/thermal-onplus-sm8550-cpu.csv),
+  [`data/thermal-onplus-sm8550-gpu.csv`](data/thermal-onplus-sm8550-gpu.csv)

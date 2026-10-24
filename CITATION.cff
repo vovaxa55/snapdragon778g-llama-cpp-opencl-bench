@@ -1,12 +1,13 @@
 cff-version: 1.2.0
-title: "Snapdragon 778G (Adreno 642L) llama.cpp CPU vs OpenCL benchmark: OpenCL offload is slower than CPU"
+title: "Snapdragon 778G (Adreno 642L) and Snapdragon 8 Gen 2 (Adreno 740) llama.cpp CPU vs OpenCL benchmark: GPU offload is slower than CPU on both"
 message: "If you use these measurements, please cite this repository."
 type: dataset
 authors:
   - family-names: "vovaxa55"
     name: "vovaxa55"
     website: "https://github.com/vovaxa55"
-date-released: 2026-10-22
+date-released: 2026-10-24
+version: 1.1.0
 license: CC-BY-4.0
 repository-code: "https://github.com/vovaxa55/snapdragon778g-llama-cpp-opencl-bench"
 url: "https://github.com/vovaxa55/snapdragon778g-llama-cpp-opencl-bench"
@@ -20,11 +21,24 @@ abstract: >-
   requires source patches to run at all (vendor compiler SIGSEGV on multi-kernel programs, F16 GEMM and
   flash-attention kernels fail to build). Includes thermal-throttling measurements: 29 % lower prompt
   throughput at 45-47 C versus a cold device, ~2 % generation difference.
+  Second device, same protocol (2026-10-24): OnePlus 11 (Snapdragon 8 Gen 2 / SM8550, Adreno 740 with 6
+  compute units, 14 GB LPDDR5X, Android 16, llama.cpp commit 6b9ba4f) reaches 45.11 tok/s prompt and 13.81
+  tok/s generation on the CPU (-ngl 0 -t 4) and 44.30/12.52 under sustained load; GPU -ngl 18 gives
+  36.97/12.97 (pp -18 %, tg -6 %) and 27.84/9.41 sustained (-37 % pp / -25 % tg). No offload level beats
+  -ngl 0: prompt throughput falls monotonically to 31.78 tok/s at -ngl 36 (-24 %) while generation stays
+  flat. The Adreno 740 driver needs none of the 778G patches. 1 Hz thermal telemetry shows the
+  throttling trigger is SoC-wide (scaling_max_freq is cut at ~50-52 C package / 85-91 C big-core for both
+  backends) and that in the sustained GPU run the prime core was pinned at 864 MHz in 155 of 157 sampled
+  seconds, versus 1.84-2.48 GHz on the CPU run.
 keywords:
   - llama.cpp
   - OpenCL
   - Adreno
   - Snapdragon 778G
+  - Snapdragon 8 Gen 2
+  - Adreno 740
+  - OnePlus 11
+  - thermal throttling
   - Termux
   - Android
   - LLM inference

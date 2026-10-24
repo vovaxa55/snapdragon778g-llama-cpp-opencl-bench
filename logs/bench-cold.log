@@ -1,0 +1,25 @@
+=== COLD ROUND 1 CPU ngl=0 ===
+STATE therm=39581 cpu7max=2092800
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |           pp256 |         45.11 ± 0.74 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |            tg64 |         13.81 ± 0.56 |
+build: 6b9ba4f (1)
+STATE therm=47000 cpu7max=2092800
+=== COLD ROUND 1 GPU ngl=18 ===
+STATE therm=47000 cpu7max=2092800
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  18 |       4 |   0 |           pp256 |         36.97 ± 0.02 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  18 |       4 |   0 |            tg64 |         12.97 ± 0.71 |
+build: 6b9ba4f (1)
+STATE therm=49331 cpu7max=1843200
+=== COLD ROUND 2 CPU ngl=0 ===
+STATE therm=50544 cpu7max=1843200
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |           pp256 |         40.85 ± 0.01 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |   0 |       4 |   0 |            tg64 |         12.59 ± 0.44 |
+build: 6b9ba4f (1)
+STATE therm=52001 cpu7max=1593600
+=== COLD ROUND 2 GPU ngl=18 ===
+STATE therm=52656 cpu7max=1593600
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  18 |       4 |   0 |           pp256 |         35.99 ± 0.12 |
+| qwen2 3B Q4_K - Medium         |   1.95 GiB |     3.40 B | OpenCL     |  18 |       4 |   0 |            tg64 |         12.53 ± 0.74 |
+build: 6b9ba4f (1)
+STATE therm=54138 cpu7max=1593600
+=== COLD ALL DONE ===
