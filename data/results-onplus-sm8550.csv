@@ -1,4 +1,4 @@
-section,label,backend,ngl,threads,prompt_tokens,gen_tokens,reps,pp_t_s,tg_t_s,so_c_temp_c,notes
+section,label,backend,ngl,threads,prompt_tokens,gen_tokens,reps,pp_t_s,tg_t_s,soc_temp_c,notes
 session_a,cpu_ngl0_r1,opencl_binary,0,4,256,64,3,42.05,12.88,not_logged,hot session (run right after the build; thermal_zone0 not sampled); +/-0.74 pp / +/-0.53 tg; cpu7 cap 2092800
 session_a,gpu_ngl18_r1,opencl_adreno740,18,4,256,64,3,36.96,12.20,not_logged,18/36 layers; +/-0.04 pp / +/-0.80 tg; -12% pp / -5% tg vs CPU of the same pair
 session_a,cpu_ngl0_r2,opencl_binary,0,4,256,64,3,36.59,12.03,not_logged,+/-0.00 pp / +/-0.52 tg; no cooldown after the GPU round
